@@ -119,11 +119,12 @@
 	                notBeforeMinutes: this.state.notBeforeMinutes,
 	                notAfterMinutes: this.state.notAfterMinutes
 	            };
-	            //console.log(JSON.stringify(data));
+	
 	            var Client = __webpack_require__(232).Client;
 	            var restClient = new Client();
 	            var component = this;
-	            restClient.post('http://localhost:8090/api/generatejwt', { data: JSON.stringify(data), json: true, headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } }, function (data, response) {
+	            var baseUrl = window.location.protocol + '//' + window.location.host;
+	            restClient.post(baseUrl + '/api/generatejwt', { data: JSON.stringify(data), json: true, headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' } }, function (data, response) {
 	                component.setState({ jwt: data.jwt });
 	            });
 	            event.preventDefault();
