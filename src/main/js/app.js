@@ -23,10 +23,8 @@ class JwtForm extends React.Component {
             notBeforeMinutes: -5,
             notAfterMinutes: 10,
             username: "",
-            keys: {
-                public: "",
-                private: ""
-            },
+            publicKey: "",
+            privateKey: "",
             jwt: ""
         };
         this.getJwt = this.getJwt.bind(this);
@@ -35,14 +33,16 @@ class JwtForm extends React.Component {
 
     componentDidMount() {
         client({method: 'GET', path: '/api/generatekeys', headers: { 'Accept': 'application/json' }}).done(response => {
-            this.setState({keys: response.entity});
+            var keys = response.entity;
+            console.log(keys);
+            this.setState({publicKey: keys.public, privateKey: keys.private});
         });
     }
 
     getJwt(event) {
         var data = {
-            publicKey: this.state.keys.public,
-            privateKey: this.state.keys.private,
+            publicKey: this.state.publicKey,
+            privateKey: this.state.privateKey,
             username: this.state.username,
             notBeforeMinutes: this.state.notBeforeMinutes,
             notAfterMinutes: this.state.notAfterMinutes
@@ -74,13 +74,13 @@ class JwtForm extends React.Component {
                     <div className="col-md-3">
                         <div style={keyFieldStyle} className="form-group">
                             <label htmlFor="publicKey">Public Key</label>
-                            <textarea id="publicKey" value={this.state.keys.public} onChange={this.onChange}></textarea>
+                            <textarea id="publicKey" value={this.state.publicKey} onChange={this.onChange}></textarea>
                         </div>
                     </div>
                     <div className="col-md-3">
                         <div style={keyFieldStyle} className="form-group">
                             <label htmlFor="privateKey">Private Key</label>
-                            <textarea id="privateKey" value={this.state.keys.private} onChange={this.onChange}></textarea>
+                            <textarea id="privateKey" value={this.state.privateKey} onChange={this.onChange}></textarea>
                         </div>
                     </div>
                 </div>

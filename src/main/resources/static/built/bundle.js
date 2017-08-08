@@ -89,10 +89,8 @@
 	            notBeforeMinutes: -5,
 	            notAfterMinutes: 10,
 	            username: "",
-	            keys: {
-	                public: "",
-	                private: ""
-	            },
+	            publicKey: "",
+	            privateKey: "",
 	            jwt: ""
 	        };
 	        _this2.getJwt = _this2.getJwt.bind(_this2);
@@ -106,15 +104,17 @@
 	            var _this3 = this;
 	
 	            client({ method: 'GET', path: '/api/generatekeys', headers: { 'Accept': 'application/json' } }).done(function (response) {
-	                _this3.setState({ keys: response.entity });
+	                var keys = response.entity;
+	                console.log(keys);
+	                _this3.setState({ publicKey: keys.public, privateKey: keys.private });
 	            });
 	        }
 	    }, {
 	        key: 'getJwt',
 	        value: function getJwt(event) {
 	            var data = {
-	                publicKey: this.state.keys.public,
-	                privateKey: this.state.keys.private,
+	                publicKey: this.state.publicKey,
+	                privateKey: this.state.privateKey,
 	                username: this.state.username,
 	                notBeforeMinutes: this.state.notBeforeMinutes,
 	                notAfterMinutes: this.state.notAfterMinutes
@@ -159,7 +159,7 @@
 	                                { htmlFor: 'publicKey' },
 	                                'Public Key'
 	                            ),
-	                            React.createElement('textarea', { id: 'publicKey', value: this.state.keys.public, onChange: this.onChange })
+	                            React.createElement('textarea', { id: 'publicKey', value: this.state.publicKey, onChange: this.onChange })
 	                        )
 	                    ),
 	                    React.createElement(
@@ -173,7 +173,7 @@
 	                                { htmlFor: 'privateKey' },
 	                                'Private Key'
 	                            ),
-	                            React.createElement('textarea', { id: 'privateKey', value: this.state.keys.private, onChange: this.onChange })
+	                            React.createElement('textarea', { id: 'privateKey', value: this.state.privateKey, onChange: this.onChange })
 	                        )
 	                    )
 	                ),
